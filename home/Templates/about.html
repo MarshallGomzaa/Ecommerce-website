@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+
+        <!-- Hero Section -->
+        <div class="section">
+            <h1>About Lets-Shop</h1>
+            <p>We make online shopping simple, affordable, and enjoyable. Our goal is to bring you quality products with fast delivery and excellent customer service.</p>
+        </div>
+
+        <!-- Our Story -->
+        <div class="section">
+            <h2>Our Story</h2>
+            <p>
+                Founded in 2024, Your Store Name started with a simple idea — to provide customers with high-quality products at competitive prices. 
+                What began as a small idea has grown into a trusted online store serving customers worldwide.
+            </p>
+        </div>
+
+        <!-- Our Mission -->
+        <div class="section">
+            <h2>Our Mission</h2>
+            <p>
+                Our mission is to deliver premium products, ensure secure payments, offer fast shipping, and provide top-tier customer support.
+            </p>
+        </div>
+
+        <!-- Features -->
+        <div class="section">
+            <h2>Why Choose Us</h2>
+            <div class="features">
+                <div class="feature-box">
+                    <h3>Quality Products</h3>
+                    <p>Carefully selected and tested items.</p>
+                </div>
+                <div class="feature-box">
+                    <h3>Fast Shipping</h3>
+                    <p>Quick and reliable delivery service.</p>
+                </div>
+                <div class="feature-box">
+                    <h3>Secure Payment</h3>
+                    <p>100% safe and secure checkout process.</p>
+                </div>
+                <div class="feature-box">
+                    <h3>Customer Support</h3>
+                    <p>Friendly support team ready to help.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call To Action -->
+        <div class="section">
+            <div class="cta">
+                <h2>Join Our Community</h2>
+                <p>Discover amazing products and exclusive offers today.</p>
+                <a href="{% url "home" %}">Start Shopping</a>
+            </div>
+        </div>
+
+    </div>
+{% endblock content %}
+

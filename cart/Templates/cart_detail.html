@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<header class="bg-dark py-2">
+        <div class="container px-4 px-lg-5 my-2">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Cart details</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Your Carts</p>
+            </div>
+        </div>
+</header>
+
+<div class="container">
+    {% if cart_products %}
+    <table class="cart-table">
+    <thead class="cart-table-header">
+        <tr>
+            <th class="cart-th">Product</th>
+            <th class="cart-th">Price</th>
+            <th class="cart-th">Quantity</th>
+            <th class="cart-th">Total</th>
+            <th class="cart-th">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in cart_products %}
+        <tr class="cart-tr">
+            <td class="cart-td">
+                <img src="{{ item.image }}" alt="{{ item.name }}" class="cart-product-image">
+                <span class="cart-product-name">{{ item.name }}</span>
+            </td>
+            <td class="cart-td">${{ item.price }}</td>
+            <td class="cart-td">{{ item.quantity }}</td>
+            <td class="cart-td">${{ item.total }}</td>
+            <td class="cart-td">
+                <form method="post" action="{% url 'update_cart' %}" class="cart-action-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="product_id" value="{{ item.id }}">
+                    <button type="submit" name="action" value="decrease" class="cart-btn">-</button>
+                    <button type="submit" name="action" value="increase" class="cart-btn">+</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+        
+
+    </tbody>
+    <tfoot>
+        <tr>
+            <td class="cart-td bg-dark text-light text-end" colspan="5">
+                <strong>Total: ${{ totals }}</strong>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+    {% else %}
+    <h4 class="text-center mt-6 text-gray-600">Your cart is empty</h4>
+    {% endif %}
+</div>
+
+{% endblock content %}
