@@ -3,9 +3,9 @@ from home.models import Product
 class Cart:
     def __init__(self, request):
         self.session = request.session
-        cart = self.session.get("session_key")
+        cart = self.session.get("cart")
         if not cart:
-            cart = self.session["session_key"] = {}
+            cart = self.session["cart"] = {}
         self.cart = cart
 
     def add(self, product, quantity=1):
@@ -69,4 +69,4 @@ class Cart:
 
     def __len__(self):
         # total quantity of all items
-        return sum(item.get('quantity', 1) for item in self.cart.values())
+        return sum(item.get('quantity', 0) for item in self.cart.values())

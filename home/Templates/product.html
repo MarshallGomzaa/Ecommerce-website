@@ -26,6 +26,7 @@
                 </a>
 
                 <button 
+                    type="button"
                     class="button w-auto add-to-cart"
                     data-product-id="{{ product.id }}">
                         Add To Cart
@@ -34,90 +35,28 @@
         </div>
     </div>
     <br><br>
-
+{% endblock content %}
+{% block scripts %}
     <script>
-        // Vanilla JS Add to Cart
-        document.querySelectorAll('.add-to-cart').forEach(btn => {
-            btn.addEventListener('click', e => {
-                const productId = btn.dataset.productId;
-
-                fetch("{% url 'add_cart' %}", {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRFToken': '{{ csrf_token }}',
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: `action=post&product_id=${productId}`
-                })
-                .then(res => res.json())
-                .then(data => {
-                    document.getElementById('cart-count').textContent = data.quantity;
-                    alert("Product added to cart!");
-                })
-                .catch(err => console.error("Error:", err));
-            });
-        });
+       $(document).on('click', '.add-to-cart', function(e){
+    e.preventDefault();
+    let product_id = $(this).data('product-id');
+    $.ajax({
+        type: 'POST',
+        url: "{% url 'add_cart' %}",
+        data: {
+            product_id: product_id,
+            action: 'post',
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        success: function(json){
+            $("#cart-count").text(json.quantity);  // update navbar
+        },
+        error: function(xhr){
+            console.log("Add cart error:", xhr.responseText);
+        }
+    });
+});
     </script>
-{% endblock content %}
-{% comment %} {% extends "base.html" %}
-{% block content %}
-    <div class="product-container">
-        <div class="product-grid">
-        
-        <!-- Product Image -->
-        <div class="product-image">
-            <img class="card-img-top" src={{product.image.url}} alt="..." />
-        </div>
+    {% endblock scripts %}
 
-        <!-- Product Info -->
-        <div class="product-info">
-            <h1>{{product.name}}</h1>
-            <div class="price">Price: ${{product.price}}</div>
-
-            <ul class="features">
-                <li>✔ Premium Quality Material</li>
-                <li>✔ Durable & Long-lasting</li>
-                <li>✔ Lightweight Design</li>
-            </ul>
-
-            <div class="flex gap-4 mt-4">
-                <a href="{% url 'cart_detail' %}" 
-                class="btn no-underline flex-1 text-center ">
-                    ← Back to Home
-                </a>
-
-                <button 
-                    class="button w-auto"
-                    value="{{ product.id }}" 
-                    id="add-cart">
-                        Add To Cart
-                </button>
-            </div>
-        </div>
-    </div>
-        <br><br>
-
-        <script>
-            $(document).on('click', '#add-cart',function(e){
-                e.preventDefault();
-                $.ajax({
-                    type: 'POST',
-                    url: "{% url 'add_cart' %}",
-                    data: {
-                        product_id: $('#add-cart').val(),
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                        action: 'post'
-                    },
-                    success: function(json){
-                        alert("Product added to cart!");
-                        document.getElementById('cart_quantity').
-                        textContent = json.quantity
-                    },
-                    error: function(xhr, errmsg, err){
-                     console.log("Error:", errmsg)
-                     }
-                });
-            });
-        </script>
-{% endblock content %}
- {% endcomment %}

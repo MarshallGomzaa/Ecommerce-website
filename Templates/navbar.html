@@ -28,15 +28,11 @@
                 <a href="{% url "cart_detail" %}" class="btn btn-outline-dark btn-sm position-relative">
                     <i class="bi bi-cart3"></i>
                     <span class="ms-1">Cart</span>
-                    <span class="position-absolute top-0 start-100 translate-middle 
-                                 badge rounded-pill bg-dark" id='cart_quantity'>
-                        {{cart_quantity }}
+                    <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
+                        {{ cart_quantity }}
                     </span>
                 </a>
-                <a href="{% url 'user_profile' %}" 
-                   class="btn btn-dark btn-sm px-3">
-                    Profile
-                </a>
+                
 
                 <!-- Login -->
             {% if user.is_authenticated%}
@@ -44,6 +40,11 @@
                     class="btn btn-dark btn-sm px-3">
                     Logout
                 </a>
+                <a href="{% url 'user_profile' %}" 
+                   class="btn btn-dark btn-sm px-3">
+                    Profile
+                </a>
+
             {% else %}
                 <a href="{% url 'login' %}" 
                    class="btn btn-dark btn-sm px-3">
@@ -64,3 +65,5 @@
                     
             </div>
         </nav>
+
+       

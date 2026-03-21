@@ -60,3 +60,48 @@
 </div>
 
 {% endblock content %}
+
+ {% block scripts %}
+        <script>
+            $(function(){
+            $(document).on('click', '.cart-action-form button', function(e){
+                e.preventDefault();
+                let button = $(this);
+                let form = button.closest('.cart-action-form');
+                let row = button.closest('tr');
+                let product_id = form.find('input[name="product_id"]').val();
+                let action = button.val();
+                let csrf_token = form.find('input[name="csrfmiddlewaretoken"]').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: form.attr('action'),
+                    data: {
+                        product_id: product_id,
+                        action: action,
+                        csrfmiddlewaretoken: csrf_token
+                    },
+                    success: function(json){
+                        // Update navbar cart quantity
+                        $("#cart-count").text(json.total_quantity);
+
+                        // Update row quantity & total
+                        if(json.product_qty <= 0){
+                            row.remove();
+                        } else {
+                            row.find('td:nth-child(3)').text(json.product_qty);
+                            row.find('td:nth-child(4)').text('$' + json.product_total);
+                        }
+
+                        // Update footer total
+                        $("tfoot strong").text('Total: $' + json.cart_total);
+                    },
+                    error: function(xhr){
+                        console.log("Cart update error:", xhr.responseText);
+                    }
+                    });
+                });
+            });
+        </script>
+{% endblock scripts %}
+    

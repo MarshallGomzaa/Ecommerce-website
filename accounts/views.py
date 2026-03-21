@@ -5,6 +5,9 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from . models import User
 from .forms import RegisterForm
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 # Create your views here.
 def user_registration(request):
@@ -60,5 +63,9 @@ def user_logout(request):
 
 def user_profile(request):
     return render(request,'user_profile.html')
+
+
+def update_user(request):
+    return render(request,'update_user.html')
 
 
